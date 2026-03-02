@@ -1,33 +1,65 @@
 
 <x-layout>
     <x-slot:title>Kezdőlap</x-slot:title>
-    <x-slot:heading> 
-        <section class="relative w-full min-h-[50vh] md:min-h-[60vh] flex flex-col items-center justify-center bg-[#121212] overflow-hidden">
+    <x-slot:heading>
+        @auth
+        
+        @else
+        <section class="relative w-full min-h-[50vh] md:min-h-[60vh] flex flex-col items-center justify-center overflow-hidden">
   
-            <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(45,212,191,0.15)_0%,_transparent_60%)]"></div>
+    <div class="absolute inset-0 opacity-[0.03] bg-[linear-gradient(to_right,#ffffff_1px,transparent_1px),linear-gradient(to_bottom,#ffffff_1px,transparent_1px)] bg-[size:4rem_4rem]"></div>
 
-            <div class="absolute inset-0 opacity-[0.03] bg-[linear-gradient(to_right,#ffffff_1px,transparent_1px),linear-gradient(to_bottom,#ffffff_1px,transparent_1px)] bg-[size:4rem_4rem]"></div>
-
-            <div class="relative z-10 flex items-center justify-center gap-3 text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight dark:text-white text-white">
-
-              <span>Mentes</span>
-
-              <div id="rotating-text-root" class="flex items-center"></div>
-
-            </div>
-  
+    <div class="flex items-center justify-center ">
+        
+        <div class="relative z-10 flex items-center justify-center gap-3 text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight dark:text-white text-white">
+            Mentes <span id="rotating-text-root"></span>
+        </div>
+        </div> 
         </section>
         @push('scripts')
             @vite(['resources/js/rotate.jsx'])
         @endpush
+        @endauth
     </x-slot:heading>
     <x-slot>
-        <div class="bg-[#121212] min-h-screen p-10 font-sans text-white flex flex-col items-center">
+        <div class="p-10 font-sans text-white flex flex-col items-center">
   
+            @auth
+            <h1 class="text-3xl text-center mb-16 uppercase text-gray-100">
+              Mit szeretnél ma csinálni? :)
+            </h1>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl w-full">
+              
+              <div class="bg-[#24221f] border border-[#3b3834] p-5 flex flex-col text-center">
+                <img src="/penandpaper.png" alt="Véleményírás" class="w-full h-56 mb-6 shadow-md">
+                <h2 class="text-lg font-bold mb-4 uppercase tracking-widest text-white">Véleményírás</h2>
+                <a href="/restaurantsearch" class="text-sm text-gray-300 mb-8 leading-relaxed flex-grow">
+                  Írj egy véleményt a kedvenc éttermedhez!
+                </a>
+              </div>
+            
+              <div class="bg-[#24221f] border border-[#3b3834] p-5 flex flex-col text-center">
+                <img src="/search.png" alt="Étteremkeresés" class="w-full h-56 mb-6 shadow-md">
+                <h2 class="text-lg font-bold mb-4 uppercase tracking-widest text-white">Étteremkeresés</h2>
+                <a href="/restaurantsearch" class="text-sm text-gray-300 mb-8 leading-relaxed flex-grow">
+                  Találj egy számodra ideális éttermet s olvasd el annak véleményeit hogy biztosan jót válassz!
+                </a>
+              </div>
+            
+              <div class="bg-[#24221f] border border-[#3b3834] p-5 flex flex-col text-center">
+                <img src="/list.png" alt="Allergénlista" class="w-full h-56 mb-6 shadow-md">
+                <h2 class="text-lg font-bold mb-4 uppercase tracking-widest text-white">Allergénlista</h2>
+                <a href="/profile" class="text-sm text-gray-300 mb-8 leading-relaxed flex-grow">
+                    Csinálj vagy szerkeszd meglévő allergénlistád hogy mindig naprakész legyél!
+                </a>
+              </div>
+            
+            </div>
+            @else
             <h1 class="text-3xl text-center mb-16 uppercase text-gray-100">
               Üdvözlünk a Mentesch weboldalán!
             </h1>
-            
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl w-full">
               
               <div class="bg-[#24221f] border border-[#3b3834] p-5 flex flex-col text-center">
@@ -58,6 +90,7 @@
               </div>
             
             </div>
+            @endauth
         </div>
     </x-slot>
 </x-layout>

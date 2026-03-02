@@ -11,7 +11,7 @@
   @vite(['resources/css/rotate.css', 'resources/js/rotate.jsx'])
 </head>
 
-<body class="flex flex-col min-h-screen text-white bg-gradient-to-t from-green-500 to-cyan-500">
+<body class="flex flex-col min-h-screen text-white">
   <nav class="sticky top-0 z-50 backdrop-blur-md bg-[#49ab6d]/60 border-b border-white/10">
     <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
       <div class="relative flex h-16 items-center justify-between">
@@ -33,10 +33,10 @@
                 <div class="flex items-center justify-end gap-4">
                     @auth
                         <a
-                            href="{{ url('/dashboard') }}"
+                            href="{{ url('/profile') }}"
                             class="inline-block px-5 py-1.5 dark:text-[#EDEDEC] border-[#19140035] hover:border-[#1915014a] border text-[#1b1b18] dark:border-[#3E3E3A] dark:hover:border-[#62605b] rounded-sm text-sm leading-normal"
                         >
-                            Dashboard
+                            Profil
                         </a>
                     @else
                         <a
@@ -59,16 +59,18 @@
       </div>
     </div>
   </nav>
-  <div class="mx-auto max-w-7xl bg-neutral-950 text-gray-200 shadow-xl flex-grow flex flex-col w-full">
+  <div class="w-full text-gray-200 flex-grow flex flex-col">
     
     @yield('content')
-    <header class="relative bg-white shadow-sm">
+    @guest
+    <header class="w-full min-h-screen flex items-center justify-center bg-gradient-to-br from-emerald-700 via-teal-600 to-blue-700">
       <div class="relative w-full h-[60vh] flex items-center justify-center px-4 sm:px-6 lg:px-8">
-        <h1 class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-white text-7xl font-bold drop-shadow-lg text-center">
+        <h1 class="text-white text-7xl font-bold drop-shadow-lg flex items-center justify-center gap-4">
           {{$heading}}
         </h1>
       </div>
     </header>
+    @endguest
     @stack('scripts')
 
     <main class="flex-grow">

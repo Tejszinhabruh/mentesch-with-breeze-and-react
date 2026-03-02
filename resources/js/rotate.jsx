@@ -10,10 +10,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const root = createRoot(container);
     root.render(
         <RotatingText
-            // 1. ITT ADOD MEG A SAJÁT SZAVAIDAT:
             texts={['élet', 'élmény', 'segítség', 'neked!']} 
             
-            // 2. ITT ADOD MEG A SAJÁT SZÍNEIDET (bg-cyan-300 és text-black)
             mainClassName="bg-green-500 text-white px-4 py-1 sm:px-5 sm:py-2 rounded-xl overflow-hidden flex justify-center items-center"
             
             staggerFrom="last"
