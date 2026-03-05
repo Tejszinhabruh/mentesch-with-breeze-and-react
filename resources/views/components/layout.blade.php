@@ -24,6 +24,7 @@
               <a href="/" aria-current="page" class="rounded-md px-3 py-2 text-sm font-medium text-white transition hover:bg-white/10">Kezdőlap</a>
               <a href="/allergens" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white transition hover:bg-white/10">Allergének</a>
               <a href="/restaurants" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white transition hover:bg-white/10">Étterem kereső</a>
+              <a href="/myallergenlist" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white transition hover:bg-white/10">Allergénlistám</a>
               @endauth
               @endif
             </div>
@@ -95,6 +96,7 @@
         @auth
         <a href="/allergens" class="hover:text-indigo-400 hover:bg-white/5 hover:text-white transition hover:bg-white/10">Allergének</a>
         <a href="/restaurants" class="hover:text-indigo-400 hover:bg-white/5 hover:text-white transition hover:bg-white/10">Étterem kereső</a>
+        <a href="/myallergenlist" class="hover:text-indigo-400 hover:bg-white/5 hover:text-white transition hover:bg-white/10">Allergénlistám</a>
         @endauth
         @endif
       </div>

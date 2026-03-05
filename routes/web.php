@@ -20,6 +20,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/allergens', function () {
     return view('allergens');
 });
+Route::get('/myallergenlist', function () {
+    return view('myallergenlist');
+});
 
 Route::get('/api/allergens-data', [AllergenController::class, 'getAllergensData']);
 

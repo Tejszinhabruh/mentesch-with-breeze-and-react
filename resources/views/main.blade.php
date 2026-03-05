@@ -101,9 +101,9 @@
              </div>
 
              <div class="p-4 bg-[#1c1a17] border-t border-[#3b3834]">
-                 <a href="/profile" class="block w-full text-center py-3 rounded-xl bg-transparent border border-blue-500/30 text-blue-400 font-semibold
+                 <a href="/myallergenlist" class="block w-full text-center py-3 rounded-xl bg-transparent border border-blue-500/30 text-blue-400 font-semibold
                                                hover:bg-blue-500 hover:text-white transition-all duration-300">
-                     Profil szerkesztése
+                     Allergénlista megtekintése
                  </a>
              </div>
          </div>
