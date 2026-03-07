@@ -25,6 +25,8 @@ Route::get('/myallergenlist', function () {
 });
 
 Route::get('/api/allergens-data', [AllergenController::class, 'getAllergensData']);
+Route::get('/api/my-allergens-list', [AllergenController::class, 'index']);
+Route::post('/api/my-allergens-update', [AllergenController::class, 'updateMyAllergens']);
 
 Route::get('/restaurants', [RestaurantController::class, 'index']);
 Route::get('/restaurants/{restaurant}', [RestaurantController::class, 'show']);

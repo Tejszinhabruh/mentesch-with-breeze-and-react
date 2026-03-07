@@ -32,6 +32,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/reviews/{review}', [ReviewController::class, 'update']);
     Route::delete('/reviews/{review}', [ReviewController::class, 'destroy']);
 
+    Route::get('/allergens', [AllergenController::class, 'index']);
     Route::post('/allergens', [AllergenController::class, 'store']);
     Route::put('/allergens/{allergen}', [AllergenController::class, 'update']);
     Route::delete('/allergens/{allergen}', [AllergenController::class, 'destroy']);
