@@ -11,7 +11,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        \Illuminate\Support\Facades\URL::forceScheme('https');
     }
 
     /**
