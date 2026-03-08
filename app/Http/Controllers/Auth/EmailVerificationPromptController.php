@@ -3,19 +3,17 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\View\View;
 
 class EmailVerificationPromptController extends Controller
 {
     /**
-     * Display the email verification prompt.
+     * Figyelmeztetés az e-mail megerősítésre.
      */
-    public function __invoke(Request $request): RedirectResponse|View
+    public function __invoke(Request $request): \Illuminate\Http\JsonResponse
     {
         return $request->user()->hasVerifiedEmail()
-                    ? redirect()->intended(route('dashboard', absolute: false))
-                    : view('auth.verify-email');
+                    ? response()->json(['message' => 'Az e-mail cím már meg van erősítve!'], 200)
+                    : response()->json(['message' => 'Kérem, erősítse meg az e-mail címet a folytatáshoz!'], 403);
     }
 }
