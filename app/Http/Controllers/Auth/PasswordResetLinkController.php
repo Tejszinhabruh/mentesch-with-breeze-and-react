@@ -28,7 +28,8 @@ class PasswordResetLinkController extends Controller
         // 1. Validáció és magyar hibaüzenetek
         $request->validate([
             'email' => ['required', 'email'],
-        ], [
+        ],
+        [
             'email.required' => 'Az e-mail cím megadása kötelező!',
             'email.email' => 'Kérem, egy valós e-mail címet adjon meg!',
         ]);
