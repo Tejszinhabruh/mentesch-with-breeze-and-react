@@ -15,9 +15,9 @@ class RegisteredUserController extends Controller
     /**
      * Display the registration view.
      */
-    public function create()
+    public function create(): \Illuminate\View\View
     {
-        return response()->json(['message' => 'Ezt a felületet a frontend kezeli.'], 404);
+        return view('auth.register');
     }
 
     /**
@@ -25,7 +25,7 @@ class RegisteredUserController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request): \Illuminate\Http\JsonResponse
+    public function store(Request $request): \Illuminate\Http\RedirectResponse
     {
         $request->validate([
             'username' => ['required', 'string', 'max:255'],
@@ -45,7 +45,7 @@ class RegisteredUserController extends Controller
         ]);
 
         $user = User::create([
-            'username' => $request->name,
+            'username' => $request->username,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
@@ -54,6 +54,6 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        return response()->json(['message' => 'Sikeres regisztráció!', 'user' => $user], 201);
+        return redirect(route('dashboard', absolute: false));
     }
 }

@@ -12,34 +12,33 @@ class AuthenticatedSessionController extends Controller
     /**
      * Display the login view.
      */
-    public function create(): \Illuminate\Http\JsonResponse
+    public function create(): \Illuminate\View\View
     {
-       return response()->json(['message' => 'Ezt a felületet a frontend kezeli.'], 404);
+        return view('auth.login');
     }
 
     /**
      * Handle an incoming authentication request.
      */
-    public function store(LoginRequest $request): \Illuminate\Http\JsonResponse
+    public function store(LoginRequest $request): \Illuminate\Http\RedirectResponse
     {
         $request->authenticate();
 
         $request->session()->regenerate();
 
-        return response()->json(['message' => 'Sikeres bejelentkezés!','user' => Auth::user()], 200);
+        return redirect()->intended(route('dashboard', absolute: false));
     }
 
     /**
      * Destroy an authenticated session.
      */
-    public function destroy(Request $request): \Illuminate\Http\JsonResponse
+    public function destroy(Request $request): \Illuminate\Http\RedirectResponse
     {
         Auth::guard('web')->logout();
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        // Főoldalra irányítás helyett JSON válasz!
-        return response()->json(['message' => 'Sikeres kijelentkezés!'], 200);
+        return redirect('/');
     }
 }
