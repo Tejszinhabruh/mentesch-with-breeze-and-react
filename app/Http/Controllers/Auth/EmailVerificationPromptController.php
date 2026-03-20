@@ -10,10 +10,10 @@ class EmailVerificationPromptController extends Controller
     /**
      * Figyelmeztetés az e-mail megerősítésre.
      */
-    public function __invoke(Request $request): \Illuminate\Http\JsonResponse
+    public function __invoke(Request $request): \Illuminate\Http\RedirectResponse|\Illuminate\View\View
     {
         return $request->user()->hasVerifiedEmail()
-                    ? response()->json(['message' => 'Az e-mail cím már meg van erősítve!'], 200)
-                    : response()->json(['message' => 'Kérem, erősítse meg az e-mail címet a folytatáshoz!'], 403);
+                    ? redirect()->intended(route('dashboard', absolute: false))
+                    : view('auth.verify-email');
     }
 }

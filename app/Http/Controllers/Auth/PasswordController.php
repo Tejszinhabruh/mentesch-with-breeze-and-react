@@ -12,7 +12,7 @@ class PasswordController extends Controller
     /**
      * Update the user's password.
      */
-    public function update(Request $request): \Illuminate\Http\JsonResponse
+    public function update(Request $request): \Illuminate\Http\RedirectResponse
     {
         $validated = $request->validateWithBag('updatePassword', [
             'current_password' => ['required', 'current_password'],
@@ -29,6 +29,6 @@ class PasswordController extends Controller
             'password' => Hash::make($validated['password']),
         ]);
 
-        return response()->json(['message' => 'Jelszó sikeresen frissítve!'], 200);
+        return back()->with('status', 'password-updated');
     }
 }

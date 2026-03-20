@@ -16,9 +16,9 @@ class NewPasswordController extends Controller
     /**
      * Display the password reset view.
      */
-    public function create(Request $request): \Illuminate\Http\JsonResponse
+    public function create(Request $request): \Illuminate\View\View
     {
-        return response()->json(['message' => 'Ezt a felületet a frontend kezeli.'], 404);
+        return view('auth.reset-password', ['request' => $request]);
     }
 
     /**
@@ -26,7 +26,7 @@ class NewPasswordController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request): \Illuminate\Http\JsonResponse
+    public function store(Request $request): \Illuminate\Http\RedirectResponse
     {
         $request->validate([
             'token' => ['required'],
@@ -56,16 +56,8 @@ class NewPasswordController extends Controller
             }
         );
 
-        if ($status == Password::PASSWORD_RESET) {
-            return response()->json(['message' => 'A jelszó sikeresen visszaállítva!'], 200);
-        }
-
-        // If the password was successfully reset, we will redirect the user back to
-        // the application's home authenticated view. If there is an error we can
-        // redirect them back to where they came from with their error message.
-        return response()->json([
-            'message' => 'Hiba történt a jelszó visszaállítása során!',
-            'error' => __($status) 
-        ], 400);
+        return $status == Password::PASSWORD_RESET
+                    ? redirect()->route('login')->with('status', __($status))
+                    : back()->withInput($request->only('email'))->withErrors(['email' => __($status)]);
     }
 }

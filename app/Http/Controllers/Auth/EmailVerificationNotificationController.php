@@ -10,14 +10,14 @@ class EmailVerificationNotificationController extends Controller
     /**
      * Új megerősítő link küldése.
      */
-    public function store(Request $request): \Illuminate\Http\JsonResponse
+    public function store(Request $request): \Illuminate\Http\RedirectResponse
     {
         if ($request->user()->hasVerifiedEmail()) {
-            return response()->json(['message' => 'Az e-mail cím már meg van erősítve!'], 200);
+            return redirect()->intended(route('dashboard', absolute: false));
         }
 
         $request->user()->sendEmailVerificationNotification();
 
-        return response()->json(['message' => 'Az új megerősítő linket elküldtük a megadott e-mail címre!'], 200);
+        return back()->with('status', 'verification-link-sent');
     }
 }
