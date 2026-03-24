@@ -24,6 +24,7 @@ class RestaurantController extends Controller
 
     public function store(Request $request)
     {
+
         $validated = $request->validate([
             'name' => 'required|string|max:250|min:5',
             'address' => 'required|string',
