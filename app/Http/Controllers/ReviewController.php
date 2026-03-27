@@ -12,12 +12,14 @@ class ReviewController extends Controller
 {
     public function store(Request $request, $restaurantId)
     {
+        $restaurant = Restaurant::findOrFail($restaurantId);
+
         $validated = $request->validate([
             'rating' => 'required|integer|min:1|max:5',
             'comment' => 'required|string|min:5|max:1000',
         ], [
             'rating.required' => 'Az értékelés megadása kötelező!',
-            'rating.integer' => 'Az értékelésnek számnak (1-5) kell lennie!',
+            'rating.integer' => 'Az értékelésnek 1 és 5 között kell lennie!',
             'rating.min' => 'Az értékelés minimum 1 csillag lehet!',
             'rating.max' => 'Az értékelés maximum 5 csillag lehet!',
             'comment.required' => 'A szöveges vélemény megadása kötelező!',

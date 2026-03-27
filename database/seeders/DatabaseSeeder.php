@@ -52,7 +52,8 @@ class DatabaseSeeder extends Seeder
 
         for ($i = 0; $i < 150; $i++) {
             Review::create([
-                'review' => $faker->realText(100), 
+                'comment' => $faker->realText(100), 
+                'rating' => $faker->numberBetween(1, 5),
                 'user_id' => $faker->randomElement($users)->id, 
                 'restaurant_id' => $faker->randomElement($restaurants)->id 
             ]);

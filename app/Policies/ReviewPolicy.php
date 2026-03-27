@@ -9,7 +9,8 @@ class ReviewPolicy
 {
     public function before(User $user, string $ability): bool|null
     {
-        if ($user->is_admin) {
+        // Az admin mindenhez kap jogot (pl. törlés), KIVÉVE a módosítást ('update')
+        if ($user->is_admin && $ability !== 'update') {
             return true;
         }
 
