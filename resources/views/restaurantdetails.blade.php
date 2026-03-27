@@ -4,16 +4,15 @@
     <x-slot>
         <div class="restaurant-details">
         <div class="header-section">
-            <div class="relative py-12 mb-10 overflow-hidden rounded-2xl bg-gradient-to-br from-emerald-800 via-teal-700 to-blue-900 shadow-2xl text-5xl">
+            <div class="relative py-12 mb-10 overflow-hidden rounded-2xl bg-gradient-to-br from-emerald-800 via-teal-700 to-blue-900 shadow-2xl text-5xl text-black dark:text-white">
                 <h1 class="mb-5"><strong>{{ $restaurant->name }}</strong></h1>
-                <p>{{ str_repeat('⭐',5) }}</p>
             </div>
-            <p class="text-3xl mb-2">Cím: {{ $restaurant->address }}</p>
-            <p>Értékelések száma: {{ count($restaurant->reviews) }}</p>
+            <p class="text-3xl mb-2 text-black dark:text-white">Cím: {{ $restaurant->address }}</p>
+            <p class="text-black dark:text-white">Értékelések száma: {{ count($restaurant->reviews) }}</p>
         </div>
 
         <div class="button-wrapper">
-            <button class="btn-new-review" onclick="beginReviewWriting()">✍️ Új vélemény írása...</button>
+            <button class="btn-new-review text-black dark:text-white" onclick="beginReviewWriting()">✍️ Új vélemény írása...</button>
         </div>
         <div id="container">
 
@@ -21,35 +20,24 @@
 
         <hr class="separator">
 
-        <div class="comment-wall">
+        <div class="comment-wall text-black dark:text-white bg-white dark:bg-zinc-950">
             @foreach ($restaurant->reviews as $review)
-            <div class="comment-card">
+            <div class="comment-card bg-white dark:bg-zinc-950">
                 <div class="comment-header">
                     <span class="user-name">{{ $review->user->username }}</span>
                     <span class="comment-date">{{ \Carbon\Carbon::parse($review->created_at)->format('Y.m.d H:i') }}</span>
                 </div>
-                <div class="comment-body">
+                <div class="comment-body text-black dark:text-white">
                     {{ $review->review }}
                 </div>
+                @if(Auth::user()->is_admin || Auth::user()->id == $review->user_id)
+                        <div class="text-right">
+                            <button class="bg-red-600 text-2xl rounded border border-red-700">🗑️</button>
+                        </div>
+                @endif
             </div>
             @endforeach
             </div>
         </div>
-        <script>
-            function beginReviewWriting(){
-                let container = document.getElementById('container');
-                let htmlContent = `
-                <div class="comment-wall">
-                <div class="comment-card">
-                <form action="review.store" method="POST">
-                <textarea name="review" placeholder="Írd le a véleményedet!" class="rounded text-center focus:text-left p-2 w-full h-64"></textarea><br>
-                <button type="submit" class="btn-new-review mt-3">Közzététel!</button>
-                </form>
-                </div>
-                </div>
-                `;
-                container.innerHTML = htmlContent;
-            }
-        </script>
     </x-slot>
 </x-layout>

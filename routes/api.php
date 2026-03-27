@@ -10,6 +10,9 @@ use App\Http\Controllers\AllergenController;
   //----------------------------------------------//
  //                Publikus utak                 //
 //----------------------------------------------//
+Route::get('/teszt', function () {
+    return response()->json(['uzenet' => 'Az API tokeletesen mukodik!']);
+});
 Route::get('/restaurants', [RestaurantController::class, 'index']);
 Route::get('/restaurants/{restaurant}', [RestaurantController::class, 'show']);
 Route::get('/allergens', [AllergenController::class, 'index']);

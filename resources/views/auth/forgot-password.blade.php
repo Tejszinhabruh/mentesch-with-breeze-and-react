@@ -1,5 +1,5 @@
 <x-guest-layout>
-    <div class="mb-4 text-sm text-gray-600">
+    <div class="mb-4 text-sm text-black dark:text-white">
         {{ __('Elfelejtetted a jelszavad? Bárkivel megesik ez, nincs gond. Csak add meg az email címed amivel regisztráltál és elküldjük neked a jelszó helyreállító linket hogy új jelszót állíthass be.') }}
     </div>
 
@@ -17,7 +17,7 @@
         </div>
 
         <div class="flex items-center justify-end mt-4">
-            <x-primary-button>
+            <x-primary-button class="bg-green-500">
                 {{ __('Link elküldése az email címre') }}
             </x-primary-button>
         </div>

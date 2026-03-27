@@ -8,33 +8,33 @@
 
             <div x-show="!isEditing" x-transition>
                 <div class="text-center md:text-left">
-                    <h2 class="text-2xl font-semibold text-white mb-4">Allergénlistád</h2>
+                    <h2 class="text-2xl font-semibold  mb-4">Allergénlistád</h2>
 
-                    <div class="bg-white/10 p-4 rounded-md text-gray-200 mb-6 flex flex-wrap gap-2 min-h-[60px] items-center">
+                    <div class="bg-white/10 p-4 rounded-md -200 mb-6 flex flex-wrap gap-2 min-h-[60px] items-center bg-zinc-100 dark:bg-zinc-800">
                         <template x-if="originalIds.length > 0">
                             <template x-for="name in getDisplayNames()" :key="name">
                                 <span class="px-3 py-1 bg-red-500/20 border border-red-500/30 text-red-200 rounded-full text-sm" x-text="name"></span>
                             </template>
                         </template>
                         <template x-if="originalIds.length === 0">
-                            <span class="text-gray-400 text-sm">Sajnos még nincs listád:(</span>
+                            <span class="text-sm">Sajnos még nincs listád 🥲</span>
                         </template>
                     </div>
 
-                    <button @click="startEditing()" class="inline-block px-6 py-2 bg-[#49ab6d] hover:bg-[#3d915c] text-white font-medium rounded-md transition duration-200 shadow-md">
+                    <button @click="startEditing()" class="inline-block px-6 py-2 bg-[#49ab6d] hover:bg-[#3d915c] font-medium rounded-md transition duration-200 shadow-md">
                         <span x-text="originalIds.length > 0 ? 'Lista módosítása' : 'Lista létrehozása'"></span>
                     </button>
                 </div>
             </div>
 
             <div x-show="isEditing" x-transition style="display: none;" class="bg-white/10 p-6 rounded-md">
-                <h2 class="text-xl font-semibold text-white mb-4">Lista szerkesztése</h2>
+                <h2 class="text-xl font-semibold  mb-4">Lista szerkesztése</h2>
 
                 <div class="space-y-3 mb-6">
                     <template x-for="(selectedId, index) in selectedIds" :key="index">
                         <div class="flex items-center gap-3">
 
-                            <select x-model.number="selectedIds[index]" class="flex-grow bg-[#1b1b18] border border-gray-600 text-gray-200 text-sm rounded-md focus:ring-[#49ab6d] focus:border-[#49ab6d] block w-full p-2.5">
+                            <select x-model.number="selectedIds[index]" class="flex-grow text-black bg-white dark:text-white dark:bg-zinc-950 border border-gray-600 text-sm rounded-md focus:ring-[#49ab6d] focus:border-[#49ab6d] block w-full p-2.5">
                                 <option value="">Válassz allergént!</option>
                                 <template x-for="allergen in allAllergens" :key="allergen.id">
                                     <option :value="allergen.id" x-text="allergen.name"></option>
@@ -52,15 +52,15 @@
                 </div>
 
                 <div class="flex flex-wrap gap-3 mt-4">
-                    <button @click="addRow()" type="button" class="px-4 py-2 bg-gray-600 hover:bg-gray-500 text-white font-medium rounded-md transition text-sm">
+                    <button @click="addRow()" type="button" class="px-4 py-2 bg-gray-600 hover:bg-gray-500  font-medium rounded-md transition text-sm">
                         + Új allergén
                     </button>
 
-                    <button @click="saveChanges()" type="button" class="px-6 py-2 bg-[#49ab6d] hover:bg-[#3d915c] text-white font-medium rounded-md transition shadow-md">
+                    <button @click="saveChanges()" type="button" class="px-6 py-2 bg-[#49ab6d] hover:bg-[#3d915c]  font-medium rounded-md transition shadow-md">
                         Mentés
                     </button>
 
-                    <button @click="cancelEditing()" type="button" class="px-4 py-2 bg-transparent border border-gray-500 text-gray-300 hover:bg-gray-700 rounded-md transition text-sm">
+                    <button @click="cancelEditing()" type="button" class="px-4 py-2 bg-transparent border border-gray-500 hover:bg-gray-700 rounded-md transition text-sm">
                         Mégse
                     </button>
                 </div>
@@ -68,98 +68,5 @@
                 <p x-show="message" x-text="message" class="mt-4 text-[#49ab6d] font-medium" x-transition></p>
             </div>
         </div>
-
-        <script>
-function allergenManager() {
-    return {
-        isEditing: false,
-        message: '',
-        
-        allAllergens: [],
-        originalIds: [],
-        selectedIds: [],
-
-        initData() {
-            fetch('/api/my-allergens-list', {
-                method: 'GET',
-                headers: {
-                    'Accept': 'application/json',
-                    'X-Requested-With': 'XMLHttpRequest'
-                }
-            }) 
-            .then(response => {
-                if (!response.ok) throw new Error('Hiba a lekérdezésnél: ' + response.status);
-                return response.json();
-            })
-            .then(data => {
-                this.allAllergens = data.all_allergens || [];
-                this.originalIds = data.user_has || [];
-                this.selectedIds = [...this.originalIds];
-            })
-            .catch(error => console.error('Hiba az adatok betöltésekor:', error));
-        },
-
-        startEditing() {
-            this.selectedIds = [...this.originalIds];
-            if (this.selectedIds.length === 0) {
-                this.selectedIds.push('');
-            }
-            this.isEditing = true;
-            this.message = '';
-        },
-
-        cancelEditing() {
-            this.isEditing = false;
-        },
-
-        addRow() {
-            this.selectedIds.push('');
-        },
-
-        removeRow(index) {
-            this.selectedIds.splice(index, 1);
-        },
-
-        getDisplayNames() {
-            return this.originalIds.map(id => {
-                let found = this.allAllergens.find(a => a.id == id);
-                return found ? found.name : '';
-            }).filter(name => name !== '');
-        },
-
-        saveChanges() {
-            let idsToSave = [...new Set(this.selectedIds.filter(id => id !== ''))];
-
-            fetch('/api/my-allergens-update', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'X-Requested-With': 'XMLHttpRequest',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                },
-                body: JSON.stringify({ allergen_ids: idsToSave })
-            })
-            .then(response => {
-                if (!response.ok) throw new Error('Hiba a mentésnél');
-                return response.json();
-            })
-            .then(data => {
-                this.originalIds = [...idsToSave];
-                this.message = data.message || 'Sikeresen mentve!';
-                
-                setTimeout(() => {
-                    this.isEditing = false;
-                    this.message = '';
-                }, 1500);
-            })
-            .catch(error => {
-                console.error('Hiba:', error);
-                this.message = 'Hiba történt a mentés során.';
-            });
-        }
-    }
-}
-</script>
     </x-slot>
 </x-layout>

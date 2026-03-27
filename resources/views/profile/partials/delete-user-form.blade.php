@@ -1,10 +1,10 @@
 <section class="space-y-6">
     <header>
-        <h2 class="text-lg font-medium text-gray-900">
+        <h2 class="text-lg font-medium text-black dark:text-white">
             {{ __('Fiók törlése') }}
         </h2>
 
-        <p class="mt-1 text-sm text-gray-600">
+        <p class="mt-1 text-sm text-black dark:text-white">
             {{ __('A fiókod törlését követően az összes hozzá tartozó adat véglegesen törlődik. A fiók törlése előtt kérjük, töltse le az összes olyan adatot vagy információt, amelyet meg szeretne őrizni.') }}
         </p>
     </header>
@@ -19,11 +19,11 @@
             @csrf
             @method('delete')
 
-            <h2 class="text-lg font-medium text-gray-900">
+            <h2 class="text-lg font-medium text-black dark:text-white">
                 {{ __('Biztos vagy benne hogy törölni akarod a fiókodat?') }}
             </h2>
 
-            <p class="mt-1 text-sm text-gray-600">
+            <p class="mt-1 text-sm text-black dark:text-white">
                 {{ __('A fiókod törlését követően az összes hozzá tartozó adat véglegesen törlődik. Kérjük, adja meg jelszavát a fiók végleges törlésének megerősítéséhez.') }}
             </p>
 
