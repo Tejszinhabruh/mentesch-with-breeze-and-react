@@ -30,6 +30,11 @@
                 <div class="comment-body text-black dark:text-white">
                     {{ $review->review }}
                 </div>
+                @if(Auth::user()->is_admin || Auth::user()->id == $review->user_id)
+                        <div class="text-right">
+                            <button class="bg-red-600 text-2xl rounded border border-red-700">🗑️</button>
+                        </div>
+                @endif
             </div>
             @endforeach
             </div>

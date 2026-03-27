@@ -35,4 +35,8 @@ Route::get('/restaurants/{id}', function ($id) {
 });
 });
 
+Route::get('/users', function () {
+    return view('users');
+})->middleware(['auth'])->name('users');
+
 require __DIR__.'/auth.php';

@@ -1,5 +1,6 @@
 const container = document.getElementById('allergens-container');
 if(container){
+    const isAdmin = container.getAttribute('data-is-admin') === 'true';
     fetch('/api/allergens')
             .then(response => response.json())
             .then(data => {
@@ -32,7 +33,12 @@ if(container){
 
                 htmlContent += `
                     <div class="border border-gray-700 rounded-xl p-6 flex flex-col transition-all duration-300 hover:-translate-y-1 hover:border-emerald-500 hover:shadow-[0_0_15px_rgba(52,211,153,0.15)] group">
-            
+                    
+                    ${isAdmin ? `
+                            <div class="text-right">
+                                <button class="bg-red-600 text-2xl rounded border border-red-700">🗑️</button>
+                            </div>
+                        ` : ''}
                     <h3 class="text-2xl font-bold ${textColor} mb-4 ${hoverColor} transition-colors">
                         ${allergen.name}
                     </h3>

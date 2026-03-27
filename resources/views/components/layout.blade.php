@@ -27,6 +27,9 @@
               <a href="/allergens" class="rounded-md px-3 py-2 text-sm font-medium hover:bg-white/5 hover: transition hover:bg-white/10">Allergének</a>
               <a href="/restaurants" class="rounded-md px-3 py-2 text-sm font-medium hover:bg-white/5 hover: transition hover:bg-white/10">Étterem kereső</a>
               <a href="/myallergenlist" class="rounded-md px-3 py-2 text-sm font-medium hover:bg-white/5 hover: transition hover:bg-white/10">Allergénlistám</a>
+              @if(Auth::user()->is_admin)
+                  <a href="/users" class="rounded-md px-3 py-2 text-sm font-medium hover:bg-white/5 hover: transition hover:bg-white/10">Felhasználók</a>
+                @endif
             </div>
           </div>
         </div>
@@ -51,7 +54,7 @@
                  x-transition:leave="transition ease-in duration-75"
                  x-transition:leave-start="transform opacity-100 scale-100"
                  x-transition:leave-end="transform opacity-0 scale-95"
-                 class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white dark:bg-zinc-950 py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" 
+                 class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-gray-400 dark:bg-zinc-900 py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" 
                  style="display: none;">
 
                 
