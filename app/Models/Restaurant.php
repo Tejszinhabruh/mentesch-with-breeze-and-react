@@ -2,13 +2,15 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Restaurant extends Model
 {
+    use HasFactory;
+
     protected $fillable = ['name', 'address', 'image'];
 
-    // Többes szám, mert egy étteremnek sok értékelése van
     public function reviews()
     {
         return $this->hasMany(Review::class);

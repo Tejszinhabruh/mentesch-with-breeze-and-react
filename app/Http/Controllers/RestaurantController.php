@@ -40,6 +40,10 @@ class RestaurantController extends Controller
             'image.mimes'=> 'Nem megfelelő képformátum! Támogatott formátumok: png, jpeg, jpg',
         ]);
 
+        if ($request->hasFile('image')) {
+            $validated['image'] = $request->file('image')->store('restaurants', 'public');
+        }
+        
         $restaurant = Restaurant::create($validated);
 
         return response()->json([

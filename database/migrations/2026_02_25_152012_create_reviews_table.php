@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::create('reviews', function (Blueprint $table) 
         {
             $table->id();
-            $table->text('review');
+            $table->text('comment');
+            $table->integer('rating');
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->foreignId('restaurant_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
