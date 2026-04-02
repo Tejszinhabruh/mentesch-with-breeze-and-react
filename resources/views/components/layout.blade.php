@@ -2,6 +2,7 @@
 <html lang="hu" id="page" class="text-black dark:text-white bg-white dark:bg-gray-900">
 <head>
   <meta charset="UTF-8">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="icon" type="image/png" href="{{ asset('logo_ver_2.png') }}">

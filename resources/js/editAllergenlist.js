@@ -8,7 +8,7 @@ window.allergenManager = function() {
         selectedIds: [],
 
         initData() {
-            fetch('/api/my-allergens-list', {
+            fetch('/my-allergens-list', {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json',
@@ -20,6 +20,7 @@ window.allergenManager = function() {
                 return response.json();
             })
             .then(data => {
+                console.log('API-ból érkező adat:', data);
                 this.allAllergens = data.all_allergens || [];
                 this.originalIds = data.user_has || [];
                 this.selectedIds = [...this.originalIds];
@@ -30,7 +31,7 @@ window.allergenManager = function() {
         startEditing() {
             this.selectedIds = [...this.originalIds];
             if (this.selectedIds.length === 0) {
-                this.selectedIds.push('');
+                this.selectedIds.push(null);
             }
             this.isEditing = true;
             this.message = '';
@@ -41,7 +42,7 @@ window.allergenManager = function() {
         },
 
         addRow() {
-            this.selectedIds.push('');
+            this.selectedIds.push(null);
         },
 
         removeRow(index) {
@@ -56,15 +57,17 @@ window.allergenManager = function() {
         },
 
         saveChanges() {
-            let idsToSave = [...new Set(this.selectedIds.filter(id => id !== ''))];
+            let idsToSave = [...new Set(this.selectedIds.filter(id => id !== null && id !== ''))];
 
-            fetch('/api/my-allergens-update', {
+            const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+            fetch('/my-allergens-update', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
                     'X-Requested-With': 'XMLHttpRequest',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    'X-CSRF-TOKEN': token
                 },
                 body: JSON.stringify({ allergen_ids: idsToSave })
             })

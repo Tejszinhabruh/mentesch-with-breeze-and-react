@@ -6,6 +6,7 @@ use App\Http\Controllers\RestaurantController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\AllergenController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Middleware\IsAdminMiddleware;
 
 /*
   //----------------------------------------------//

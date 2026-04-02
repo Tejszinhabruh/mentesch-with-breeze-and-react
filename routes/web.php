@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RestaurantController;
+use App\Http\Controllers\AllergenController;
 use App\Models\Restaurant;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
@@ -40,5 +41,8 @@ Route::get('/users', function () {
     $users = User::all();
     return view('users',['users'=>$users]);
 })->middleware(['auth'])->name('users');
+
+Route::get('/my-allergens-list', [AllergenController::class, 'getMyAllergens']);
+Route::post('/my-allergens-update', [AllergenController::class, 'updateMyAllergens']);
 
 require __DIR__.'/auth.php';
