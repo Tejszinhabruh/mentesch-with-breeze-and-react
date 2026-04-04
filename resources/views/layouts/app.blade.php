@@ -26,10 +26,10 @@
                         <div class="flex space-x-4 ml-4">
                           @if (Route::has('login'))
                           @auth
-                          <a href="/" aria-current="page" class="rounded-md px-3 py-2 text-sm font-medium text-white transition hover:bg-white/10">Kezdőlap</a>
-                          <a href="/allergens" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white transition hover:bg-white/10">Allergének</a>
-                          <a href="/restaurants" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white transition hover:bg-white/10">Étterem kereső</a>
-                          <a href="/myallergenlist" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white transition hover:bg-white/10">Allergénlistám</a>
+                          <a href="/" aria-current="page" class="rounded-md px-3 py-2 text-sm font-medium text-black dark:text-white transition hover:bg-white/10">Kezdőlap</a>
+                          <a href="/allergens" class="rounded-md px-3 py-2 text-sm font-medium text-black dark:text-white hover:bg-white/5 transition hover:bg-white/10">Allergének</a>
+                          <a href="/restaurants" class="rounded-md px-3 py-2 text-sm font-medium text-black dark:text-white hover:bg-white/5 transition hover:bg-white/10">Étterem kereső</a>
+                          <a href="/myallergenlist" class="rounded-md px-3 py-2 text-sm font-medium text-black dark:text-white hover:bg-white/5 transition hover:bg-white/10">Allergénlistám</a>
                           @endauth
                           @endif
                         </div>

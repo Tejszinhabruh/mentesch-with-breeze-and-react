@@ -13,7 +13,7 @@
                     <div class="bg-white/10 p-4 rounded-md -200 mb-6 flex flex-wrap gap-2 min-h-[60px] items-center bg-zinc-100 dark:bg-zinc-800">
                         <template x-if="originalIds.length > 0">
                             <template x-for="name in getDisplayNames()" :key="name">
-                                <span class="px-3 py-1 bg-red-500/20 border border-red-500/30 text-red-200 rounded-full text-sm" x-text="name"></span>
+                                <span class="px-3 py-1 bg-red-500/20 border border-red-500/30 text-red-500 dark:text-red-200 rounded-full text-sm" x-text="name"></span>
                             </template>
                         </template>
                         <template x-if="originalIds.length === 0">

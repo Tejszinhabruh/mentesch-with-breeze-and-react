@@ -35,9 +35,11 @@
                                 {{ \Carbon\Carbon::parse($user->created_at)->format('Y.m.d') }}
                             </td>
                             <td class="px-6 py-4 text-right">
-                                <button class="p-2 bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white border border-red-500/50 rounded-lg transition-all transform active:scale-95 shadow-sm">
-                                    <span class="text-xl">🗑️</span>
-                                </button>
+                                <form action="/api/users/{{ $user->id }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="text-xl p-2 bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white border border-red-500/50 rounded-lg transition-all transform active:scale-95 shadow-sm">🗑️</button>
+                                </form>
                             </td>
                         </tr>
                         @endforeach

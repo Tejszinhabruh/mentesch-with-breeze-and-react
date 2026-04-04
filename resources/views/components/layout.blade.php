@@ -25,9 +25,9 @@
               @if (Route::has('login'))
               @auth
               <a href="/" aria-current="page" class="rounded-md px-3 py-2 text-sm font-medium transition hover:bg-white/10">Kezdőlap</a>
-              <a href="/allergens" class="rounded-md px-3 py-2 text-sm font-medium hover:bg-white/5 hover: transition hover:bg-white/10">Allergének</a>
-              <a href="/restaurants" class="rounded-md px-3 py-2 text-sm font-medium hover:bg-white/5 hover: transition hover:bg-white/10">Étterem kereső</a>
-              <a href="/myallergenlist" class="rounded-md px-3 py-2 text-sm font-medium hover:bg-white/5 hover: transition hover:bg-white/10">Allergénlistám</a>
+              <a href="/allergens" class="rounded-md px-3 py-2 text-sm font-medium hover:bg-white/5 transition hover:bg-white/10">Allergének</a>
+              <a href="/restaurants" class="rounded-md px-3 py-2 text-sm font-medium hover:bg-white/5 transition hover:bg-white/10">Étterem kereső</a>
+              <a href="/myallergenlist" class="rounded-md px-3 py-2 text-sm font-medium hover:bg-white/5 transition hover:bg-white/10">Allergénlistám</a>
               @if(Auth::user()->is_admin)
                   <a href="/users" class="rounded-md px-3 py-2 text-sm font-medium hover:bg-white/5 hover: transition hover:bg-white/10">Felhasználók</a>
                 @endif

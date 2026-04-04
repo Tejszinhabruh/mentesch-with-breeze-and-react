@@ -20,7 +20,7 @@
         <div class="mt-4">
             <x-input-label for="password" :value="__('Jelszó')" />
 
-            <x-text-input id="password" class="block mt-1 w-full"
+            <x-text-input id="password" class="block mt-1 w-full text-black"
                             type="password"
                             name="password"
                             required autocomplete="new-password" />
@@ -32,7 +32,7 @@
         <div class="mt-4">
             <x-input-label for="password_confirmation" :value="__('Jelszó ismét')" />
 
-            <x-text-input id="password_confirmation" class="block mt-1 w-full"
+            <x-text-input id="password_confirmation" class="block mt-1 w-full text-black"
                             type="password"
                             name="password_confirmation" required autocomplete="new-password" />
 

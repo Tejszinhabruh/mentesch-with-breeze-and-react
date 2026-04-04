@@ -19,9 +19,11 @@ function filterRestaurants(restaurants, searchWord) {
 function createRestaurantCard(restaurant, isAdmin) {
     const adminHtml = isAdmin ? `
         <div class="text-right">
-            <button class="p-2 bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white border border-red-500/50 rounded-lg transition-all transform active:scale-95 shadow-sm">
-                <span class="text-xl">🗑️</span>
-            </button>
+            <form action="/api/restaurants/${restaurant.id}" method="POST">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="text-xl p-2 bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white border border-red-500/50 rounded-lg transition-all transform active:scale-95 shadow-sm">🗑️</button>
+            </form>
         </div>
     ` : '';
 
