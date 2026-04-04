@@ -17,20 +17,22 @@ function filterRestaurants(restaurants, searchWord) {
 }
 
 function createRestaurantCard(restaurant, isAdmin) {
+    const cardId = `restaurant-card-${restaurant.id}`;
+    
     const adminHtml = isAdmin ? `
-        <div class="text-right">
-            <form action="/api/restaurants/${restaurant.id}" method="POST">
-                @csrf
-                @method('DELETE')
-                <button type="submit" class="text-xl p-2 bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white border border-red-500/50 rounded-lg transition-all transform active:scale-95 shadow-sm">🗑️</button>
-            </form>
+        <div class="absolute top-2 right-2 z-10">
+            <button onclick="deleteRestaurant(${restaurant.id})" class="p-2 bg-red-900/30 hover:bg-red-500 text-red-500 hover:text-white rounded-md transition-all border border-red-500/30">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                </svg>
+            </button>
         </div>
     ` : '';
 
     const reviewCount = restaurant.reviews ? restaurant.reviews.length : 0;
 
     return `
-        <div class="group bg-gray-400 dark:bg-[#24221f] border border-[#3b3834] rounded-2xl overflow-hidden shadow-lg hover:-translate-y-2 hover:border-emerald-500/50 hover:shadow-emerald-900/20 transition-all duration-300 flex flex-col">
+        <div id="${cardId}" class="group bg-gray-400 dark:bg-[#24221f] border border-[#3b3834] rounded-2xl overflow-hidden shadow-lg hover:-translate-y-2 hover:border-emerald-500/50 hover:shadow-emerald-900/20 transition-all duration-300 flex flex-col relative">
             <div class="p-6 flex-grow text-center">
                 ${adminHtml}
                 <div class="w-16 h-16 bg-emerald-900/30 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
@@ -39,8 +41,8 @@ function createRestaurantCard(restaurant, isAdmin) {
                 <h3 class="text-2xl font-bold mb-2 group-hover:text-emerald-400 transition-colors">
                     ${restaurant.name}
                 </h3>
-                <div class="flex items-center justify-center gap-2-400 mb-6">
-                    <span class="text-emerald-500">★</span>
+                <div class="flex items-center justify-center gap-2 mb-6">
+                    <span class="text-emerald-500">📝</span>
                     <span>${reviewCount} vélemény</span>
                 </div>
             </div>
@@ -81,3 +83,33 @@ async function handleSearch() {
 }
 
 window.searchRestaurant = handleSearch;
+
+window.deleteRestaurant = async function(id) {
+    if (!confirm('Biztosan törölni szeretnéd ezt az éttermet és az összes hozzá tartozó adatot?')) return;
+
+    try {
+        const response = await fetch(`/api/restaurants/${id}`, {
+            method: 'DELETE',
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                'Accept': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        });
+
+        if (response.ok) {
+            const card = document.getElementById(`restaurant-card-${id}`);
+            if (card) {
+                card.style.opacity = '0';
+                card.style.transform = 'scale(0.9)';
+                setTimeout(() => card.remove(), 300);
+            }
+        } else {
+            const errorData = await response.json();
+            alert('Hiba: ' + (errorData.message || 'Nem sikerült a törlés.'));
+        }
+    } catch (error) {
+        console.error('Hiba a törlés során:', error);
+        alert('Hálózati hiba történt a törléskor.');
+    }
+};
