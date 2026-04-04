@@ -13,18 +13,14 @@ class VerifyEmailController extends Controller
      */
     public function __invoke(EmailVerificationRequest $request): \Illuminate\Http\RedirectResponse
     {
-        // Hova irányítsuk a felhasználót a siker után?
-        // (Alapértelmezetten a localhost:3000-re, ha nincs beállítva más az .env fájlban)
-        $frontendUrl = env('FRONTEND_URL', 'http://localhost:3000');
-
         if ($request->user()->hasVerifiedEmail()) {
-            return redirect()->intended($frontendUrl . '/dashboard?verified=1');
+            return redirect()->intended(route('dashboard', absolute: false));
         }
 
         if ($request->user()->markEmailAsVerified()) {
             event(new Verified($request->user()));
         }
 
-        return redirect()->intended($frontendUrl . '/dashboard?verified=1');
+        return redirect()->intended(route('dashboard', absolute: false));
     }
 }
