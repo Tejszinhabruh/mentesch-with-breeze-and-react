@@ -8,66 +8,6 @@ use App\Http\Controllers\AllergenController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Middleware\IsAdminMiddleware;
 
-/*
-  //----------------------------------------------//
- //                Publikus utak                 //
-//----------------------------------------------//
-Route::get('/teszt', function () {
-    return response()->json(['uzenet' => 'Az API tokeletesen mukodik!']);
-});
-Route::get('/restaurants', [RestaurantController::class, 'index']);
-Route::get('/restaurants/{restaurant}', [RestaurantController::class, 'show']);
-Route::get('/allergens', [AllergenController::class, 'index']);
-Route::get('/restaurants', [RestaurantController::class, 'index']);
-
-
-  //----------------------------------------------//
- //                Felhasználóknak               //
-//----------------------------------------------//
-Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/user', function (Request $request) {
-        return $request->user();
-    });
-
-    // Csak értékelni és saját allergént menteni tud!
-    Route::post('/restaurants/{restaurant}/reviews', [ReviewController::class, 'store']);
-    Route::put('/reviews/{review}', [ReviewController::class, 'update']);
-    Route::delete('/reviews/{review}', [ReviewController::class, 'destroy']);
-    Route::post('/my-allergens', [AllergenController::class, 'updateMyAllergens']);
-
-    Route::middleware('auth:sanctum')->group(function () {
-    Route::post('/restaurants', [RestaurantController::class, 'store']);
-});
-});
-
-
-//----------------------------------------------//
-//              CSAK ADMINOKNAK                 //
-//----------------------------------------------//
-Route::middleware(['auth:sanctum', 'admin'])->group(function () {
-    Route::post('/restaurants', [RestaurantController::class, 'store']);
-    Route::put('/restaurants/{restaurant}', [RestaurantController::class, 'update']);
-    Route::delete('/restaurants/{restaurant}', [RestaurantController::class, 'destroy']);
-
-    Route::post('/allergens', [AllergenController::class, 'store']);
-    Route::put('/allergens/{allergen}', [AllergenController::class, 'update']);
-    Route::delete('/allergens/{allergen}', [AllergenController::class, 'destroy']);
-});
-*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // ==========================================
 // 1. PUBLIKUS VÉGPONTOK (Nem kell bejelentkezés)
@@ -106,10 +46,10 @@ Route::middleware('auth:sanctum', 'verified')->group(function () {
 // ==========================================
 // 3. KIZÁRÓLAG ADMIN VÉGPONTOK
 // ==========================================
-Route::middleware(['auth:sanctum', IsAdminMiddleware::class])->group(function () {
-
-    Route::get('/admin/users', [UserController::class, 'index']);
-    Route::delete('/admin/users/{user}', [UserController::class, 'destroy']);
-    Route::get('/admin/dashboard-stats', [AdminController::class, 'stats']);
-
-});
+//Route::middleware(['auth:sanctum', IsAdminMiddleware::class])->group(function () {
+//
+//    Route::get('/admin/users', [UserController::class, 'index']);
+//    Route::delete('/admin/users/{user}', [UserController::class, 'destroy']);
+//    Route::get('/admin/dashboard-stats', [AdminController::class, 'stats']);
+//
+//});
