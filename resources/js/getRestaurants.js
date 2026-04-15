@@ -17,10 +17,12 @@ function filterRestaurants(restaurants, searchWord) {
 }
 
 function createRestaurantCard(restaurant, isAdmin) {
+    const cardId = `restaurant-card-${restaurant.id}`;
+    
     const adminHtml = isAdmin ? `
-        <div class="text-right">
-            <button class="p-2 bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white border border-red-500/50 rounded-lg transition-all transform active:scale-95 shadow-sm">
-                <span class="text-xl">🗑️</span>
+        <div class="absolute top-2 right-2 z-10">
+            <button onclick="deleteRestaurant(${restaurant.id})" class="text-xl p-2 bg-red-900/30 hover:bg-red-500 text-red-500 hover:text-white rounded-md transition-all border border-red-500/30">
+                🗑️
             </button>
         </div>
     ` : '';
@@ -28,7 +30,7 @@ function createRestaurantCard(restaurant, isAdmin) {
     const reviewCount = restaurant.reviews ? restaurant.reviews.length : 0;
 
     return `
-        <div class="group bg-gray-400 dark:bg-[#24221f] border border-[#3b3834] rounded-2xl overflow-hidden shadow-lg hover:-translate-y-2 hover:border-emerald-500/50 hover:shadow-emerald-900/20 transition-all duration-300 flex flex-col">
+        <div id="${cardId}" class="group bg-gray-400 dark:bg-[#24221f] border border-black/2 dark:border-white/10 rounded-2xl overflow-hidden shadow-lg hover:-translate-y-2 hover:border-emerald-500/50 hover:shadow-emerald-900/20 transition-all duration-300 flex flex-col relative">
             <div class="p-6 flex-grow text-center">
                 ${adminHtml}
                 <div class="w-16 h-16 bg-emerald-900/30 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
@@ -37,8 +39,8 @@ function createRestaurantCard(restaurant, isAdmin) {
                 <h3 class="text-2xl font-bold mb-2 group-hover:text-emerald-400 transition-colors">
                     ${restaurant.name}
                 </h3>
-                <div class="flex items-center justify-center gap-2-400 mb-6">
-                    <span class="text-emerald-500">★</span>
+                <div class="flex items-center justify-center gap-2 mb-6">
+                    <span class="text-emerald-500">📝</span>
                     <span>${reviewCount} vélemény</span>
                 </div>
             </div>
@@ -50,6 +52,40 @@ function createRestaurantCard(restaurant, isAdmin) {
         </div>
     `;
 }
+
+function showStatusMessage(message, type = 'success') {
+    const container = document.getElementById('status-message-container');
+    if (!container) return;
+
+    const toast = document.createElement('div');
+    
+    const bgClass = type === 'success' ? 'bg-emerald-600' : 'bg-red-600';
+    
+    toast.className = `
+        ${bgClass} text-black dark:text-white px-6 py-3 rounded-xl shadow-lg 
+        transition-all duration-500 transform translate-y-[-20px] opacity-0
+        flex items-center justify-between pointer-events-auto
+    `;
+    
+    toast.innerHTML = `
+        <span class="font-medium">${message}</span>
+        <button onclick="this.parentElement.remove()" class="ml-4 hover:scale-110 transition-transform">✕</button>
+    `;
+
+    container.appendChild(toast);
+
+    setTimeout(() => {
+        toast.classList.remove('translate-y-[-20px]', 'opacity-0');
+        toast.classList.add('translate-y-0', 'opacity-100');
+    }, 10);
+
+    setTimeout(() => {
+        toast.classList.remove('translate-y-0', 'opacity-100');
+        toast.classList.add('translate-y-[-20px]', 'opacity-0');
+        setTimeout(() => toast.remove(), 500);
+    }, 3000);
+}
+
 
 async function handleSearch() {
     const searchInput = document.getElementById('search');
@@ -74,8 +110,41 @@ async function handleSearch() {
 
     } catch (error) {
         console.error('Hiba történt az éttermek lekérésekor:', error);
-        container.innerHTML = '<p class="text-center text-red-500 mt-4">Hiba történt az adatok betöltése során. Kérjük, próbálja újra később!</p>';
+        showStatusMessage('Hiba történt az adatok betöltése során. Kérjük, próbálja újra később!','error');
     }
 }
 
 window.searchRestaurant = handleSearch;
+
+window.deleteRestaurant = async function(id) {
+    if (!confirm('Biztosan törölni szeretnéd ezt az éttermet és az összes hozzá tartozó adatot?')) return;
+
+    try {
+        const response = await fetch(`/api/restaurants/${id}`, {
+            method: 'DELETE',
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                'Accept': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        });
+
+        if (response.ok) {
+            showStatusMessage('Étterem sikeresen törölve!', 'success');
+            
+            const card = document.getElementById(`restaurant-card-${id}`);
+            if (card) {
+                card.style.opacity = '0';
+                card.style.transform = 'scale(0.9)';
+                setTimeout(() => card.remove(), 300);
+            }
+        } else {
+            const errorData = await response.json();
+            console.error('Hiba: ' + (errorData.message || 'Nem sikerült a törlés.'));
+            showStatusMessage('Nem sikerült a törlés!','error');
+        }
+    } catch (error) {
+        console.error('Hiba a törlés során:', error);
+        showStatusMessage('Hálózati hiba történt a törléskor!','error');
+    }
+};

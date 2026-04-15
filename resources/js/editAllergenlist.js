@@ -1,38 +1,51 @@
+const AllergenApi = {
+    getHeaders() {
+        return {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content')
+        };
+    },
+
+    async fetchMyAllergens() {
+        const response = await fetch('/my-allergens-list', { headers: this.getHeaders() });
+        if (!response.ok) throw new Error('Nem sikerült az adatok lekérése.');
+        return await response.json();
+    },
+
+    async updateMyAllergens(ids) {
+        const response = await fetch('/my-allergens-update', {
+            method: 'POST',
+            headers: this.getHeaders(),
+            body: JSON.stringify({ allergen_ids: ids })
+        });
+        if (!response.ok) throw new Error('Hiba történt a mentés során.');
+        return await response.json();
+    }
+};
+
 window.allergenManager = function() {
     return {
         isEditing: false,
         message: '',
-        
         allAllergens: [],
         originalIds: [],
         selectedIds: [],
 
-        initData() {
-            fetch('/my-allergens-list', {
-                method: 'GET',
-                headers: {
-                    'Accept': 'application/json',
-                    'X-Requested-With': 'XMLHttpRequest'
-                }
-            }) 
-            .then(response => {
-                if (!response.ok) throw new Error('Hiba a lekérdezésnél: ' + response.status);
-                return response.json();
-            })
-            .then(data => {
-                console.log('API-ból érkező adat:', data);
+        async init() {
+            try {
+                const data = await AllergenApi.fetchMyAllergens();
                 this.allAllergens = data.all_allergens || [];
                 this.originalIds = data.user_has || [];
                 this.selectedIds = [...this.originalIds];
-            })
-            .catch(error => console.error('Hiba az adatok betöltésekor:', error));
+            } catch (error) {
+                console.error(error.message);
+            }
         },
 
         startEditing() {
-            this.selectedIds = [...this.originalIds];
-            if (this.selectedIds.length === 0) {
-                this.selectedIds.push(null);
-            }
+            this.selectedIds = this.originalIds.length > 0 ? [...this.originalIds] : [null];
             this.isEditing = true;
             this.message = '';
         },
@@ -49,33 +62,18 @@ window.allergenManager = function() {
             this.selectedIds.splice(index, 1);
         },
 
-        getDisplayNames() {
-            return this.originalIds.map(id => {
-                let found = this.allAllergens.find(a => a.id == id);
-                return found ? found.name : '';
-            }).filter(name => name !== '');
+        get displayNames() {
+            return this.originalIds
+                .map(id => this.allAllergens.find(a => a.id == id)?.name)
+                .filter(Boolean);
         },
 
-        saveChanges() {
-            let idsToSave = [...new Set(this.selectedIds.filter(id => id !== null && id !== ''))];
+        async saveChanges() {
+            const idsToSave = [...new Set(this.selectedIds.filter(id => id))];
 
-            const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-
-            fetch('/my-allergens-update', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'X-Requested-With': 'XMLHttpRequest',
-                    'X-CSRF-TOKEN': token
-                },
-                body: JSON.stringify({ allergen_ids: idsToSave })
-            })
-            .then(response => {
-                if (!response.ok) throw new Error('Hiba a mentésnél');
-                return response.json();
-            })
-            .then(data => {
+            try {
+                const data = await AllergenApi.updateMyAllergens(idsToSave);
+                
                 this.originalIds = [...idsToSave];
                 this.message = data.message || 'Sikeresen mentve!';
                 
@@ -83,11 +81,9 @@ window.allergenManager = function() {
                     this.isEditing = false;
                     this.message = '';
                 }, 1500);
-            })
-            .catch(error => {
-                console.error('Hiba:', error);
-                this.message = 'Hiba történt a mentés során.';
-            });
+            } catch (error) {
+                this.message = error.message;
+            }
         }
-    }
-}
+    };
+};

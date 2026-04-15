@@ -6,7 +6,7 @@
             <h1 class="text-5xl md:text-7xl font-extrabold  tracking-tight drop-shadow-md">Felhasználók</h1>
         </div>
         <div class="relative py-12 mb-10">
-            <div class="w-full overflow-x-auto rounded-lg border border-zinc-700 shadow-xl">
+            <div class="w-full overflow-x-auto rounded-lg border border-black/2 dark:border-white/10 shadow-xl">
                 <table class="w-full text-left border-collapse bg-slate-300 dark:bg-zinc-900 text-black dark:text-white">
                     <thead class="bg-emerald-800 text-emerald-50 uppercase text-sm">
                         <tr>
@@ -35,9 +35,11 @@
                                 {{ \Carbon\Carbon::parse($user->created_at)->format('Y.m.d') }}
                             </td>
                             <td class="px-6 py-4 text-right">
-                                <button class="p-2 bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white border border-red-500/50 rounded-lg transition-all transform active:scale-95 shadow-sm">
-                                    <span class="text-xl">🗑️</span>
-                                </button>
+                                <form action="/api/users/{{ $user->id }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="text-xl p-2 bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white border border-red-500/50 rounded-lg transition-all transform active:scale-95 shadow-sm">🗑️</button>
+                                </form>
                             </td>
                         </tr>
                         @endforeach
