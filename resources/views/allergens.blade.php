@@ -7,5 +7,6 @@
         </div>
         <div id="allergens-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-4 max-w-7xl mx-auto" data-is-admin="{{ auth()->check() && auth()->user()->is_admin ? 'true' : 'false' }}">
     </div>
+    <div id="status-message-container" class="fixed top-5 left-1/2 -translate-x-1/2 z-[100] flex flex-col gap-3 w-full max-w-md px-4 pointer-events-none"></div>
     </x-slot>
 </x-layout>
