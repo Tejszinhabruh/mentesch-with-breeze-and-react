@@ -64,5 +64,10 @@ class DatabaseSeeder extends Seeder
             $randomAllergenIds = $faker->randomElements(array_column($allergens, 'id'), rand(0, 3));
             $user->allergens()->attach($randomAllergenIds);
         }
+
+        foreach ($restaurants as $restaurant) {
+            $randomAllergenIds = $faker->randomElements(array_column($allergens, 'id'), rand(2, 5));
+            $restaurant->allergens()->attach($randomAllergenIds);
+        }
     }
 }

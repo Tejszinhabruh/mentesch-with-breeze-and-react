@@ -54,6 +54,8 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        return response()->json(['message' => 'Sikeres regisztráció!','user' => $user], 201);
+        Auth::login($user);
+
+        return redirect()->route('dashboard');
     }
 }
