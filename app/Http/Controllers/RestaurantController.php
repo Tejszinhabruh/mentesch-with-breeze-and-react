@@ -11,14 +11,14 @@ class RestaurantController extends Controller
 
     public function index()
     {
-        $restaurants = Restaurant::with('reviews.user')->paginate(10);
+        $restaurants = Restaurant::with('reviews.user', 'allergens')->paginate(15);
         
         return response()->json($restaurants, 200);
     }
 
     public function show($id)
     {
-        $restaurant = Restaurant::with('reviews.user')->findOrFail($id);
+        $restaurant = Restaurant::with('reviews.user', 'allergens')->findOrFail($id);
         
         return response()->json($restaurant, 200);
     }

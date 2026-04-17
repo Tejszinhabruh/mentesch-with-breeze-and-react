@@ -34,10 +34,7 @@ class ReviewController extends Controller
             'comment' => $validated['comment'],
         ]);
 
-        return response()->json([
-            'message' => 'Értékelés sikeresen elmentve!', 
-            'data' => $review
-        ], 201);
+        return back()->with('success', 'Értékelés sikeresen elmentve!');
     }
 
     public function update(Request $request, Review $review)
@@ -68,6 +65,6 @@ class ReviewController extends Controller
 
         $review->delete();
 
-        return response()->json(['message' => 'Értékelés sikeresen törölve!'], 200);
+        return back()->with('success', 'Értékelés sikeresen törölve!');
     }
 }
