@@ -11,7 +11,7 @@ class RestaurantController extends Controller
 
     public function index()
     {
-        $restaurants = Restaurant::with('reviews.user', 'allergens')->paginate(15);
+        $restaurants = Restaurant::with('reviews.user')->paginate(15);
         
         return response()->json($restaurants, 200);
     }

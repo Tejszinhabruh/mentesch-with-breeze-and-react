@@ -31,7 +31,7 @@
         </div>
 
         <div class="button-wrapper">
-            <button class="btn-new-review text-black dark:text-white" onclick="beginReviewWriting({{ $restaurant->id }}, '{{ csrf_token() }}')">✍️ Új vélemény írása...</button>
+            <button class="btn-new-review text-black dark:text-white" onclick="beginReviewWriting()">✍️ Új vélemény írása...</button>
         </div>
         <div id="container">
 
@@ -63,12 +63,19 @@
                     @endif
                 </div>
                 @if(Auth::check() && (Auth::user()->is_admin || Auth::user()->id == $review->user_id))
-                    <div class="text-right">
+                    <div class="flex justify-between items-center">
                         <form id="delete-form-{{ $review->id }}" action="/reviews/{{ $review->id }}" method="POST" class="inline">
                             @csrf
                             @method('DELETE')
-                            <button type="button" onclick="openDeleteModal({{ $review->id }})" class="p-2 text-emerald-500 hover:bg-emerald-500/10 rounded-lg transition-colors">
+                            <button type="button" onclick="openDeleteModal({{ $review->id }})" class="p-2 text-red-500 hover:bg-red-500/50 rounded-lg transition-colors border border-red-500">
                                 <span class="text-xl">🗑️</span>
+                            </button>
+                        </form>
+                        <form id="update-form-{{ $review->id }}" action="/reviews/{{ $review->id }}" method="PUT" class="inline">
+                            @csrf
+                            @method('UPDATE')
+                            <button type="button" onclick="openUpdateModal({{ $review->id }})" class="p-2 text-emerald-500 hover:bg-emerald-500/50 rounded-lg transition-colors border border-emerald-500">
+                                <span class="text-xl">✏️</span>
                             </button>
                         </form>
                     </div>
@@ -104,33 +111,3 @@
         </div>
     </div>
 </div>
-
-
-<script>
-let currentDeleteFormId = null;
-
-function openDeleteModal(reviewId) {
-    currentDeleteFormId = `delete-form-${reviewId}`;
-    const modal = document.getElementById('delete-modal');
-    modal.classList.remove('hidden');
-    modal.querySelector('div').classList.add('scale-100', 'opacity-100');
-}
-
-function closeDeleteModal() {
-    const modal = document.getElementById('delete-modal');
-    modal.classList.add('hidden');
-}
-
-document.getElementById('confirm-delete-btn').addEventListener('click', function() {
-    if (currentDeleteFormId) {
-        document.getElementById(currentDeleteFormId).submit();
-    }
-});
-
-window.onclick = function(event) {
-    const modal = document.getElementById('delete-modal');
-    if (event.target == modal) {
-        closeDeleteModal();
-    }
-}
-</script>

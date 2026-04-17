@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Amarna:ital,wght@0,100..700;1,100..700&family=Nothing+You+Could+Do&display=swap" rel="stylesheet">
   <title>{{$title}}</title>
-  @vite(['resources/css/rotate.css', 'resources/js/rotate.jsx','resources/css/commentwall.css','resources/js/colorscheme.js','resources/js/createReview.js','resources/js/editAllergenlist.js','resources/js/getRestaurants.js','resources/js/getAllergens.js','resources/js/toggleMobileMenu.js'])
+  @vite(['resources/css/rotate.css', 'resources/js/rotate.jsx','resources/css/commentwall.css','resources/js/colorscheme.js','resources/js/createReview.js','resources/js/editAllergenlist.js','resources/js/getRestaurants.js','resources/js/getAllergens.js','resources/js/toggleMobileMenu.js','resources/js/deleteUpdateRestaurant.js'])
   <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
 
@@ -95,7 +95,7 @@
         </div>
     </div>
 
-    <div id="mobile-menu" class="hidden md:hidden bg-[#49ab6d] dark:bg-zinc-950 border-t border-white/10 px-4 pt-2 pb-4 space-y-1 shadow-xl absolute w-full">
+    <div id="mobile-menu" class="hidden md:hidden bg-gray-400 dark:bg-zinc-900 border-t border-white/10 px-4 pt-2 pb-4 space-y-1 shadow-xl absolute w-full">
         @if (Route::has('login'))
             @auth
                 <a href="/" class="block rounded-md px-3 py-3 text-base font-medium hover:bg-white/10 transition">Kezdőlap</a>

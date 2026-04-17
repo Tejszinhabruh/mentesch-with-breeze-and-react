@@ -1,6 +1,7 @@
 async function fetchRestaurants() {
     const response = await fetch('/api/restaurants');
     if (!response.ok) {
+        console.log(response);
         throw new Error(`Hálózati hiba történt: ${response.status}`);
     }
     const responseData = await response.json();
@@ -117,8 +118,6 @@ async function handleSearch() {
 window.searchRestaurant = handleSearch;
 
 window.deleteRestaurant = async function(id) {
-    if (!confirm('Biztosan törölni szeretnéd ezt az éttermet és az összes hozzá tartozó adatot?')) return;
-
     try {
         const response = await fetch(`/api/restaurants/${id}`, {
             method: 'DELETE',
