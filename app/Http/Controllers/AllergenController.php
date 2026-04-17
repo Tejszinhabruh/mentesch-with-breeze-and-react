@@ -59,6 +59,16 @@ class AllergenController extends Controller
         return response()->json(['message' => 'Allergén sikeresen törölve!'], 200);
     }
 
+    public function getMyAllergens() 
+    {
+        $user = Auth::user();
+
+        return response()->json([
+            'all_allergens' => Allergen::all(), 
+            'user_has'      => $user ? $user->allergens()->pluck('allergens.id') : [] 
+        ], 200);
+    }
+
 
     public function updateMyAllergens(Request $request)
     {

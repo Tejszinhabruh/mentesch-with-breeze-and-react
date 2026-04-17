@@ -2,18 +2,18 @@
     <x-slot:title>Allergénlistám</x-slot:title>
     <x-slot:heading>Allergénlistám</x-slot:heading>
     <x-slot>
-                <div class="max-w-4xl mx-auto p-6 bg-white/5 rounded-lg shadow-lg backdrop-blur-sm border border-white/10 mt-8" 
+                <div class="max-w-4xl mx-auto p-6 bg-gray-200 dark:bg-zinc-900 rounded-lg shadow-lg backdrop-blur-sm border border-black/2 dark:border-white/10 mt-8" 
              x-data="allergenManager()" 
-             x-init="initData()">
+             x-init="init()">
 
             <div x-show="!isEditing" x-transition>
                 <div class="text-center md:text-left">
                     <h2 class="text-2xl font-semibold  mb-4">Allergénlistád</h2>
 
-                    <div class="bg-white/10 p-4 rounded-md -200 mb-6 flex flex-wrap gap-2 min-h-[60px] items-center bg-zinc-100 dark:bg-zinc-800">
+                    <div class="bg-gray-300 dark:bg-zinc-950 p-4 rounded-md mb-6 flex flex-wrap gap-2 min-h-[60px] items-center">
                         <template x-if="originalIds.length > 0">
-                            <template x-for="name in getDisplayNames()" :key="name">
-                                <span class="px-3 py-1 bg-red-500/20 border border-red-500/30 text-red-200 rounded-full text-sm" x-text="name"></span>
+                            <template x-for="name in displayNames" :key="name">
+                                <span class="px-3 py-1 bg-red-500/20 border border-red-500/30 text-red-500 dark:text-red-200 rounded-full text-sm" x-text="name"></span>
                             </template>
                         </template>
                         <template x-if="originalIds.length === 0">

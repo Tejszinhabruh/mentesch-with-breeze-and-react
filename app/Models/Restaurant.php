@@ -15,4 +15,9 @@ class Restaurant extends Model
     {
         return $this->hasMany(Review::class);
     }
+
+    public function allergens()
+    {
+        return $this->belongsToMany(Allergen::class);
+    }
 }

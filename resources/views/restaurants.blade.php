@@ -13,7 +13,7 @@
         </div>
 
         <div class="max-w-2xl mx-auto mb-16">
-            <form class="relative group">
+            <div class="relative group">
                 <input name="search" id="search" 
                     placeholder="Keress rá egy étteremre..." 
                     class="w-full bg-[#24221f] border-2 border-[#3b3834] text-lg rounded-full py-4 px-8 pl-14 
@@ -22,15 +22,15 @@
                 <div class="absolute left-5 top-1/2 -translate-y-1/2 text-2xl grayscale group-focus-within:grayscale-0 transition-all">
                     🔎
                 </div>
-                <button type="submit" class="absolute right-3 top-1/2 -translate-y-1/2 bg-emerald-600 hover:bg-emerald-500  px-6 py-2 rounded-full font-bold transition-colors">
+                <button onclick="searchRestaurant()" class="absolute right-3 top-1/2 -translate-y-1/2 bg-emerald-600 hover:bg-emerald-500  px-6 py-2 rounded-full font-bold transition-colors">
                     Keresés
                 </button>
-            </form>
+            </div>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-10" id="restaurantsContainer" data-is-admin="{{ auth()->check() && auth()->user()->is_admin ? 'true' : 'false' }}">
 
         </div>
-
+            <div id="status-message-container" class="fixed top-5 left-1/2 -translate-x-1/2 z-[100] flex flex-col gap-3 w-full max-w-md px-4 pointer-events-none"></div>
     </x-slot>
 </x-layout>
