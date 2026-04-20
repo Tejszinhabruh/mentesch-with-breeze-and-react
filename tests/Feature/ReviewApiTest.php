@@ -17,12 +17,13 @@ class ReviewApiTest extends TestCase
         $user = User::factory()->create();
         $restaurant = Restaurant::factory()->create();
 
-        $response = $this->actingAs($user)->postJson("/api/restaurants/{$restaurant->id}/reviews", [
+        $response = $this->actingAs($user)->post("/restaurants/{$restaurant->id}/reviews", [
             'rating' => 5,
             'comment' => 'Nagyon finom volt minden!',
         ]);
 
-        $response->assertStatus(201);
+        $response->assertStatus(302);
+
         $this->assertDatabaseHas('reviews', ['comment' => 'Nagyon finom volt minden!']);
     }
 
@@ -33,12 +34,12 @@ class ReviewApiTest extends TestCase
         $user = User::factory()->create();
         $restaurant = Restaurant::factory()->create();
 
-        $response = $this->actingAs($user)->postJson("/api/restaurants/{$restaurant->id}/reviews", [
+        $response = $this->actingAs($user)->post("/restaurants/{$restaurant->id}/reviews", [
             'rating' => 10, 
             'comment' => 'Jo', 
         ]);
-
-        $response->assertStatus(422)->assertJsonValidationErrors(['rating', 'comment']);
+        
+        $response->assertStatus(302)->assertSessionHasErrors(['rating', 'comment']);
     }
 
 
@@ -100,9 +101,11 @@ class ReviewApiTest extends TestCase
         $user = User::factory()->create();
         $review = Review::factory()->create(['user_id' => $user->id]);
 
-        $response = $this->actingAs($user)->deleteJson("/api/reviews/{$review->id}");
+        $review = Review::factory()->create(['user_id' => $user->id]);
 
-        $response->assertStatus(200);
+        $response = $this->actingAs($user)->delete("/reviews/{$review->id}");
+
+        $response->assertStatus(302);
         $this->assertDatabaseMissing('reviews', ['id' => $review->id]);
     }
 
@@ -127,9 +130,8 @@ class ReviewApiTest extends TestCase
         $admin = User::factory()->create(['is_admin' => true]);
         $review = Review::factory()->create(['user_id' => $user->id]);
 
-        $response = $this->actingAs($admin)->deleteJson("/api/reviews/{$review->id}");
-
-        $response->assertStatus(200);
+        $response = $this->actingAs($admin)->delete("/reviews/{$review->id}");
+        $response->assertStatus(302);
     }
 
 
