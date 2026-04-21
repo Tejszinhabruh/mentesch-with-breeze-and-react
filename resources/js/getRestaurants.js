@@ -18,11 +18,17 @@ function filterRestaurants(restaurants, searchWord) {
 
 function createRestaurantCard(restaurant, isAdmin) {
     const cardId = `restaurant-card-${restaurant.id}`;
+
+    const token = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
     
     const adminHtml = isAdmin ? `
         <div class="absolute top-2 right-2 z-10">
-            <button onclick="deleteRestaurant(${restaurant.id})" class="text-xl p-2 bg-red-900/30 hover:bg-red-500 text-red-500 hover:text-white rounded-md transition-all border border-red-500/30">
-                🗑️
+            <form id="delete-form-${restaurant.id}" action="/restaurants/${restaurant.id}" method="POST" class="inline">
+                    <input type="hidden" name="_token" value="${token}">
+                    <input type="hidden" name="_method" value="DELETE">
+            </form>
+            <button type="button" onclick="openDeleteModal(${restaurant.id})" class="p-2 text-red-500 hover:bg-red-500/50 rounded-lg transition-colors border border-red-500">
+                <span class="text-xl">🗑️</span>
             </button>
         </div>
     ` : '';
@@ -51,39 +57,6 @@ function createRestaurantCard(restaurant, isAdmin) {
             </div>
         </div>
     `;
-}
-
-function showStatusMessage(message, type = 'success') {
-    const container = document.getElementById('status-message-container');
-    if (!container) return;
-
-    const toast = document.createElement('div');
-    
-    const bgClass = type === 'success' ? 'bg-emerald-600' : 'bg-red-600';
-    
-    toast.className = `
-        ${bgClass} text-black dark:text-white px-6 py-3 rounded-xl shadow-lg 
-        transition-all duration-500 transform translate-y-[-20px] opacity-0
-        flex items-center justify-between pointer-events-auto
-    `;
-    
-    toast.innerHTML = `
-        <span class="font-medium">${message}</span>
-        <button onclick="this.parentElement.remove()" class="ml-4 hover:scale-110 transition-transform">✕</button>
-    `;
-
-    container.appendChild(toast);
-
-    setTimeout(() => {
-        toast.classList.remove('translate-y-[-20px]', 'opacity-0');
-        toast.classList.add('translate-y-0', 'opacity-100');
-    }, 10);
-
-    setTimeout(() => {
-        toast.classList.remove('translate-y-0', 'opacity-100');
-        toast.classList.add('translate-y-[-20px]', 'opacity-0');
-        setTimeout(() => toast.remove(), 500);
-    }, 3000);
 }
 
 
@@ -117,34 +90,3 @@ async function handleSearch() {
 window.onload = handleSearch;
 
 window.searchRestaurant = handleSearch;
-
-window.deleteRestaurant = async function(id) {
-    try {
-        const response = await fetch(`/api/restaurants/${id}`, {
-            method: 'DELETE',
-            headers: {
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                'Accept': 'application/json',
-                'X-Requested-With': 'XMLHttpRequest'
-            }
-        });
-
-        if (response.ok) {
-            showStatusMessage('Étterem sikeresen törölve!', 'success');
-            
-            const card = document.getElementById(`restaurant-card-${id}`);
-            if (card) {
-                card.style.opacity = '0';
-                card.style.transform = 'scale(0.9)';
-                setTimeout(() => card.remove(), 300);
-            }
-        } else {
-            const errorData = await response.json();
-            console.error('Hiba: ' + (errorData.message || 'Nem sikerült a törlés.'));
-            showStatusMessage('Nem sikerült a törlés!','error');
-        }
-    } catch (error) {
-        console.error('Hiba a törlés során:', error);
-        showStatusMessage('Hálózati hiba történt a törléskor!','error');
-    }
-};

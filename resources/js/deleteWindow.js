@@ -1,7 +1,7 @@
 let currentDeleteFormId = null;
 
-window.openDeleteModal = function(reviewId) {
-    currentDeleteFormId = `delete-form-${reviewId}`;
+window.openDeleteModal = function(id) {
+    currentDeleteFormId = `delete-form-${id}`;
     const modal = document.getElementById('delete-modal');
     modal.classList.remove('hidden');
     modal.querySelector('div').classList.add('scale-100', 'opacity-100');

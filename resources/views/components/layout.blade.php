@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Amarna:ital,wght@0,100..700;1,100..700&family=Nothing+You+Could+Do&display=swap" rel="stylesheet">
   <title>{{$title}}</title>
-  @vite(['resources/css/rotate.css', 'resources/js/rotate.jsx','resources/css/commentwall.css','resources/js/colorscheme.js','resources/js/createReview.js','resources/js/editAllergenlist.js','resources/js/getRestaurants.js','resources/js/getAllergens.js','resources/js/toggleMobileMenu.js','resources/js/deleteUpdateRestaurant.js'])
+  @vite(['resources/css/rotate.css', 'resources/js/rotate.jsx','resources/css/commentwall.css','resources/js/colorscheme.js','resources/js/createReview.js','resources/js/editAllergenlist.js','resources/js/getRestaurants.js','resources/js/getAllergens.js','resources/js/toggleMobileMenu.js','resources/js/deleteWindow.js','resources/js/statusMessageBoxAnimation.js'])
   <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
 
@@ -77,7 +77,7 @@
                                 Belépés
                             </a>
                             @if (Route::has('register'))
-                                <a href="{{ route('register') }}" class="inline-block px-5 py-1.5 bg-green-500 hover:bg-green-600 transition rounded-md text-sm font-medium text-white">
+                                <a href="{{ route('register') }}" class="inline-block px-5 py-1.5 bg-green-500 hover:bg-green-600 transition rounded-md text-sm font-medium text-black dark:text-white">
                                     Regisztráció
                                 </a>
                             @endif
@@ -167,5 +167,46 @@
       </div>
     </div>
   </footer>
+
+  <div id="delete-modal" class="fixed inset-0 z-[9999] hidden flex items-center justify-center bg-black/60 backdrop-blur-sm">
+    <div class="isolate bg-white dark:bg-zinc-900 rounded-2xl p-8 max-w-sm w-full mx-4 shadow-2xl border border-emerald-500/20">
+        <div class="text-center">
+            <div class="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-emerald-100 dark:bg-emerald-900/30 mb-4">
+                <span class="text-3xl">🍃</span>
+            </div>
+            <h3 class="text-xl font-bold text-zinc-900 dark:text-zinc-100 mb-2 leading-tight">Biztos vagy benne?</h3>
+            @if(request()->is('restaurants'))
+            <p class="text-zinc-500 dark:text-zinc-400 mb-6 text-sm leading-relaxed">Ez a művelet nem vonható vissza. Az étterem és a hozzá tartozó értékelések véglegesen törlődnek.</p>
+            @elseif(request()->is('restaurants/*'))
+            <p class="text-zinc-500 dark:text-zinc-400 mb-6 text-sm leading-relaxed">Ez a művelet nem vonható vissza. Az értékelés véglegesen törlődik.</p>
+            @else
+            <p class="text-zinc-500 dark:text-zinc-400 mb-6 text-sm leading-relaxed">Ez a művelet nem vonható vissza. Az allergén véglegesen törlődik.</p>
+            @endif
+            
+            <div class="flex gap-3 mt-4">
+                <button type="button" onclick="closeDeleteModal()" class="flex-1 px-4 py-2.5 bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 rounded-xl hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors font-semibold text-sm">
+                    Mégse
+                </button>
+                <button type="button" id="confirm-delete-btn" class="flex-1 px-4 py-2.5 bg-emerald-600 text-white rounded-xl hover:bg-emerald-700 shadow-lg shadow-emerald-500/30 transition-all font-semibold text-sm">
+                    Igen, töröld
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (session('success') || session('error'))
+    <div id="toast-notification" 
+         class="fixed top-5 left-1/2 -translate-x-1/2 z-[100] min-w-[300px] transform transition-all duration-500 ease-in-out">
+        <div class="{{ session('success') ? 'bg-emerald-500' : 'bg-red-500' }} text-white px-6 py-3 rounded-xl shadow-2xl flex items-center justify-between border border-white/20 backdrop-blur-sm">
+            <div class="flex items-center gap-3">
+                <p class="font-semibold text-sm">{{ session('success') ?? session('error') }}</p>
+            </div>
+            <button onclick="document.getElementById('toast-notification').remove()" class="ml-4 hover:opacity-70 transition-opacity">
+                X
+            </button>
+        </div>
+    </div>
+@endif
 </body>
 </html>

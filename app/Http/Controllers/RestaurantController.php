@@ -80,6 +80,6 @@ class RestaurantController extends Controller
 
         $restaurant->delete();
 
-        return response()->json(['message' => 'Az étterem sikeresen törölve!'], 200);
+        return back()->with('success', 'Étterem sikeresen törölve!');
     }
 }
