@@ -14,10 +14,10 @@
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
         <!-- Scripts -->
-        @vite(['resources/css/app.css', 'resources/js/app.js','resources/js/colorscheme.js'])
+        @vite(['resources/css/app.css', 'resources/js/app.js','resources/js/colorscheme.js','resources/js/toggleMobileMenu.js'])
     </head>
     <body class="font-sans antialiased">
-        <nav class="sticky top-0 z-50 backdrop-blur-md bg-[#49ab6d]/60 border-b border-white/10">
+        <nav class="sticky top-0 z-50 backdrop-blur-md bg-[#49ab6d]/70 border-b border-white/10">
                 <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
                   <div class="relative flex h-16 items-center justify-between">
                     <div class="flex items-center">
@@ -35,11 +35,10 @@
                         </div>
                       </div>
                     </div>
-                    <div class="flex-none flex items-center absolute right-0">
+                    <div class="flex items-center gap-3 md:gap-4 ml-auto">
                     <a>
-                        <button id="themeBtn" class="ml-auto w-10 h-10 transition-all duration-300 focus:outline-none bg-center bg-[url(sun.png)] dark:bg-[url(moon.png)] bg-contain bg-no-repeat origin-top-right rounded-full"></button>
+                        <button id="themeBtn" class="inline-block w-10 h-10 flex-shrink-0 transition-all duration-300 focus:outline-none bg-center bg-[url(/sun.png)] dark:bg-[url(/moon.png)] bg-contain bg-no-repeat rounded-full"></button>
                     </a>
-                    </div>
                     @if (Route::has('login'))
                             <div class="flex items-center justify-end gap-4">
                                 @auth
@@ -62,7 +61,41 @@
                                 @endauth
                               </div>
                         @endif
+                        <div class="md:hidden flex items-center">
+                    <button onclick="toggleMobileMenu()" class="text-2xl p-2 rounded-lg hover:bg-white/10 transition-colors focus:outline-none">
+                        <img src="/hamburgermenuicon.png" alt="Hamburger menü ikon" height="50px" width="50px">
+                    </button>
+                </div>
                   </div>
+                </div>
+                <div id="mobile-menu" class="hidden md:hidden bg-gray-400 dark:bg-zinc-900 border-t border-white/10 px-4 pt-2 pb-4 space-y-1 shadow-xl absolute w-full text-black dark:text-white">
+                    @if (Route::has('login'))
+                        @auth
+                            <a href="/" class="block rounded-md px-3 py-3 text-base font-medium hover:bg-white/10 transition">Kezdőlap</a>
+                            <a href="/allergens" class="block rounded-md px-3 py-3 text-base font-medium hover:bg-white/10 transition">Allergének</a>
+                            <a href="/restaurants" class="block rounded-md px-3 py-3 text-base font-medium hover:bg-white/10 transition">Étterem kereső</a>
+                            <a href="/myallergenlist" class="block rounded-md px-3 py-3 text-base font-medium hover:bg-white/10 transition">Allergénlistám</a>
+                            @if(Auth::user()->is_admin)
+                                <a href="/users" class="block rounded-md px-3 py-3 text-base font-medium hover:bg-white/10 transition">Felhasználók</a>
+                            @endif
+
+                            <hr class="border-white/20 my-2">
+
+                            <div class="px-3 py-2 text-sm font-bold opacity-70 uppercase">Bejelentkezve mint: {{ Auth::user()->username }}</div>
+                            <a href="{{ route('profile.edit') }}" class="block rounded-md px-3 py-3 text-base font-medium hover:bg-white/10 transition">Profil szerkesztése</a>
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+                                <button type="submit" class="block w-full text-left rounded-md px-3 py-3 text-base font-medium text-red-500 hover:bg-red-500/10 transition" onclick="event.preventDefault(); this.closest('form').submit();">
+                                    Kijelentkezés
+                                </button>
+                            </form>
+                        @else
+                            <a href="{{ route('login') }}" class="block rounded-md px-3 py-3 text-base font-medium hover:bg-white/10 transition">Belépés</a>
+                            @if (Route::has('register'))
+                                <a href="{{ route('register') }}" class="block rounded-md px-3 py-3 text-base font-medium bg-green-500 text-white hover:bg-green-600 transition mt-2">Regisztráció</a>
+                            @endif
+                        @endauth
+                    @endif
                 </div>
             </nav>
         <div class="min-h-screen text-black bg-white dark:text-white dark:bg-zinc-950">

@@ -15,7 +15,7 @@
     >{{ __('Fiók törlése') }}</x-danger-button>
 
     <x-modal name="confirm-user-deletion" :show="$errors->userDeletion->isNotEmpty()" focusable>
-        <form method="post" action="{{ route('profile.destroy') }}" class="p-6">
+        <form method="post" action="{{ route('profile.destroy') }}" class="p-6 bg-white dark:bg-zinc-950">
             @csrf
             @method('delete')
 
@@ -24,7 +24,9 @@
             </h2>
 
             <p class="mt-1 text-sm text-black dark:text-white">
-                {{ __('A fiókod törlését követően az összes hozzá tartozó adat véglegesen törlődik. Kérjük, adja meg jelszavát a fiók végleges törlésének megerősítéséhez.') }}
+                {{ __('A fiókod törlését követően az összes hozzá tartozó adat ') }}
+                <span class="text-red-500 font-bold uppercase">{{ __('véglegesen') }}</span>
+                {{ __(' törlődik. Kérjük, adja meg jelszavát a fiók végleges törlésének megerősítéséhez.') }}
             </p>
 
             <div class="mt-6">
@@ -35,7 +37,7 @@
                     name="password"
                     type="password"
                     class="mt-1 block w-3/4"
-                    placeholder="{{ __('Password') }}"
+                    placeholder="{{ __('Jelszó') }}"
                 />
 
                 <x-input-error :messages="$errors->userDeletion->get('password')" class="mt-2" />

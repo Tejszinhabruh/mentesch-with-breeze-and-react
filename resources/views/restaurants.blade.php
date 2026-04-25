@@ -1,3 +1,6 @@
+<script>
+    window.userAllergens = @json(auth()->user() ? auth()->user()->allergens->pluck('id') : []);
+</script>
 <x-layout>
     <x-slot:title>Étteremkereső</x-slot:title>
     
@@ -32,5 +35,6 @@
 
         </div>
             <div id="status-message-container" class="fixed top-5 left-1/2 -translate-x-1/2 z-[100] flex flex-col gap-3 w-full max-w-md px-4 pointer-events-none"></div>
+            <div id="pagination-links"></div>
     </x-slot>
 </x-layout>

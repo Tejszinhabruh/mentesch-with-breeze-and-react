@@ -1,5 +1,5 @@
 <x-guest-layout>
-    <div class="mb-4 text-sm text-gray-600">
+    <div class="mb-4 text-sm text-gray-400">
         {{ __('Köszönjük a regisztrációt! Mielőtt elkezdené, kérjük, erősítse meg e-mail címét az e-mailben küldött linkre kattintva. Ha nem kapta meg az e-mailt, szívesen küldünk Önnek egy másikat.') }}
     </div>
 

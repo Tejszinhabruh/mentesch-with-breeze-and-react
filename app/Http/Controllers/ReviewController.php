@@ -56,7 +56,7 @@ class ReviewController extends Controller
 
         $review->update($validated);
 
-        return response()->json(['message' => 'Értékelés sikeresen frissítve!'], 200);
+        return back()->with('success', 'Értékelés sikeresen frissítve!');
     }
 
     public function destroy(Review $review)

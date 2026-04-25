@@ -56,7 +56,7 @@ class AllergenController extends Controller
 
         $allergen->delete();
         
-        return response()->json(['message' => 'Allergén sikeresen törölve!'], 200);
+        return back()->with('success', 'Allergén sikeresen törölve!');
     }
 
     public function getMyAllergens() 

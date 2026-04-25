@@ -13,7 +13,8 @@
                             <th class="px-6 py-4 font-semibold">ID</th>
                             <th class="px-6 py-4 font-semibold">Felhasználó neve</th>
                             <th class="px-6 py-4 font-semibold text-center">Admin státusz</th>
-                            <th class="px-6 py-4 font-semibold">Csatlakozás</th>
+                            <th class="px-6 py-4 font-semibold text-center">Csatlakozás</th>
+                            <th class="px-6 py-4 font-semibold text-center">E-mail megerősítés dátuma</th>
                             <th class="px-6 py-4 text-right"></th>
                         </tr>
                     </thead>
@@ -31,14 +32,21 @@
                                     <span class="px-3 py-1 text-xs font-bold text-white dark:text-zinc-400 bg-slate-700 dark:bg-zinc-800 rounded-full border border-zinc-600">Nem</span>
                                 @endif
                             </td>
-                            <td class="px-6 py-4 text-sm">
+                            <td class="px-6 py-4 text-sm text-center">
                                 {{ \Carbon\Carbon::parse($user->created_at)->format('Y.m.d') }}
                             </td>
+                            @if($user->email_verified_at == null)
+                            <td class="px-6 py-4 font-bold text-red-500 text-center">Nincs megerősítve!</td>
+                            @else
+                            <td class="px-6 py-4 font-bold text-center text-green-500">{{ $user->email_verified_at }}</td>
+                            @endif
                             <td class="px-6 py-4 text-right">
-                                <form action="/api/users/{{ $user->id }}" method="POST">
+                                <form id="delete-form-{{$user->id}}" action="/users/{{ $user->id }}" method="POST" class="inline">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="text-xl p-2 bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white border border-red-500/50 rounded-lg transition-all transform active:scale-95 shadow-sm">🗑️</button>
+                                    <button type="button" onclick="openDeleteModal({{ $user->id }})" class="p-2 text-red-500 hover:bg-red-500/50 rounded-lg transition-colors border border-red-500">
+                                        <span class="text-xl">🗑️</span>
+                                    </button>
                                 </form>
                             </td>
                         </tr>

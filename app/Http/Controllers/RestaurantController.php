@@ -11,7 +11,7 @@ class RestaurantController extends Controller
 
     public function index()
     {
-        $restaurants = Restaurant::with('reviews.user', 'allergens')->paginate(15);
+        $restaurants = Restaurant::with('reviews.user','allergens')->paginate(15);
         
         return response()->json($restaurants, 200);
     }
@@ -80,6 +80,6 @@ class RestaurantController extends Controller
 
         $restaurant->delete();
 
-        return response()->json(['message' => 'Az étterem sikeresen törölve!'], 200);
+        return back()->with('success', 'Étterem sikeresen törölve!');
     }
 }

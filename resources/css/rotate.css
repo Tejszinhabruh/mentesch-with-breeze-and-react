@@ -35,14 +35,12 @@
   white-space: pre;
 }
 
-/* resources/css/rotate.css */
 .text-rotate {
   display: inline-flex;
   position: relative;
   align-items: center;
 }
 
-/* Ez elrejti a képernyőolvasóknak szánt statikus szöveget */
 .text-rotate-sr-only {
   position: absolute;
   width: 1px;
@@ -62,5 +60,5 @@
 
 .text-rotate-element {
   display: inline-block;
-  will-change: transform, opacity; /* Segít a böngészőnek az animációban */
+  will-change: transform, opacity;
 }
